@@ -15,6 +15,7 @@ class HomeController {
         $newComics = [];
         foreach($realComics as $row) {
             $newComics[] = [
+                'id' => $row['id'],
                 'title' => $row['name'],
                 'price' => number_format($row['price'], 0, ',', '.'),
                 'stock' => $row['quantity'] > 0 ? 'Còn hàng (' . $row['quantity'] . ')' : 'Hết hàng',
@@ -25,10 +26,10 @@ class HomeController {
         // If no real comics are added yet, fallback to some mock data to keep layout from breaking
         if(empty($newComics)) {
             $newComics = [
-                ['title' => 'Dragon Ball Super Tập 10', 'price' => '22.000', 'stock' => 'Còn hàng', 'image' => 'https://via.placeholder.com/200x250/2c5282/ffffff?text=New+1'],
-                ['title' => 'Jujutsu Kaisen Tập 1', 'price' => '38.000', 'stock' => 'Còn hàng', 'image' => 'https://via.placeholder.com/200x250/2b6cb0/ffffff?text=New+2'],
-                ['title' => 'Demon Slayer Bộ Đôi', 'price' => '65.000', 'stock' => 'Sắp hết', 'image' => 'https://via.placeholder.com/200x250/4299e1/ffffff?text=New+3'],
-                ['title' => 'Spy x Family Tập 8', 'price' => '30.000', 'stock' => 'Còn hàng', 'image' => 'https://via.placeholder.com/200x250/3182ce/ffffff?text=New+4']
+                ['id' => 1, 'title' => 'Dragon Ball Super Tập 10', 'price' => '22.000', 'stock' => 'Còn hàng', 'image' => 'https://via.placeholder.com/200x250/2c5282/ffffff?text=New+1'],
+                ['id' => 2, 'title' => 'Jujutsu Kaisen Tập 1', 'price' => '38.000', 'stock' => 'Còn hàng', 'image' => 'https://via.placeholder.com/200x250/2b6cb0/ffffff?text=New+2'],
+                ['id' => 3, 'title' => 'Demon Slayer Bộ Đôi', 'price' => '65.000', 'stock' => 'Sắp hết', 'image' => 'https://via.placeholder.com/200x250/4299e1/ffffff?text=New+3'],
+                ['id' => 4, 'title' => 'Spy x Family Tập 8', 'price' => '30.000', 'stock' => 'Còn hàng', 'image' => 'https://via.placeholder.com/200x250/3182ce/ffffff?text=New+4']
             ];
         }
 

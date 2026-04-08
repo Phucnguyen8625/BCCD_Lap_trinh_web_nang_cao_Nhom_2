@@ -60,9 +60,11 @@
             <!-- Right utilities -->
             <div class="w-full md:w-1/4 flex items-center justify-center md:justify-end text-yellow-300 text-sm mt-4 md:mt-0 space-x-6">
                 <!-- Shopping Cart -->
-                <a href="#" class="relative hover:text-white transition group flex items-center space-x-1">
+                <a href="index.php?controller=cart" class="relative hover:text-white transition group flex items-center space-x-1">
                     <i class="fas fa-shopping-cart text-lg"></i>
-                    <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">3</span>
+                    <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                        <?php echo isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : '0'; ?>
+                    </span>
                     <span class="ml-2 hidden lg:inline">Giỏ hàng</span>
                 </a>
                 <!-- User Account -->
@@ -125,9 +127,9 @@
                         <img src="<?php echo $comic['image']; ?>" alt="Cover" class="w-full h-full object-cover">
                         <!-- Add to cart overlay popup -->
                         <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
-                            <button class="bg-secondary text-white font-bold py-2 px-4 rounded-xl flex items-center transform scale-90 group-hover:scale-100 transition">
+                            <a href="index.php?controller=cart&action=add&id=1" class="bg-secondary text-white font-bold py-2 px-4 rounded-xl flex items-center transform scale-90 group-hover:scale-100 transition">
                                 <i class="fas fa-cart-plus mr-2"></i> Mua ngay
-                            </button>
+                            </a>
                         </div>
                     </div>
                     <div class="p-2 flex-grow flex flex-col justify-between">
@@ -166,9 +168,9 @@
                             <img src="<?php echo $comic['image']; ?>" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Cover">
                             
                             <div class="absolute bottom-0 left-0 w-full image-overlay px-2 pb-2 pt-6 flex justify-center opacity-0 group-hover:opacity-100 transition duration-300">
-                                <button class="w-full bg-white text-gray-900 border border-gray-300 font-semibold py-1 rounded text-sm hover:bg-gray-100 hover:text-primary transition">
+                                <a href="index.php?controller=cart&action=add&id=<?php echo isset($comic['id']) ? $comic['id'] : 1; ?>" class="w-full text-center bg-white text-gray-900 border border-gray-300 font-semibold py-1 rounded text-sm hover:bg-gray-100 hover:text-primary transition block">
                                     Thêm vào giỏ
-                                </button>
+                                </a>
                             </div>
                         </div>
                         <div class="mt-2 pl-1 h-16 flex flex-col justify-between">

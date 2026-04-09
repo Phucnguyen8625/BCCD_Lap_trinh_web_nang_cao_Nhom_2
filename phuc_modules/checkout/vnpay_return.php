@@ -7,16 +7,34 @@ ensureSeedSessionData();
 
 $pageTitle = 'Kết quả thanh toán VNPAY';
 
+function normalizeVnpayPayDate(?string $payDate): ?string
+{
+    $payDate = trim((string) $payDate);
+
+    if ($payDate === '') {
+        return null;
+    }
+
+    $dt = DateTime::createFromFormat('YmdHis', $payDate);
+
+    if ($dt === false) {
+        return null;
+    }
+
+    return $dt->format('Y-m-d H:i:s');
+}
+
 $input = $_GET;
 $isValid = vnpayVerifyResponse($input);
 
-$txnRef = trim($_GET['vnp_TxnRef'] ?? '');
-$responseCode = trim($_GET['vnp_ResponseCode'] ?? '');
-$transactionStatus = trim($_GET['vnp_TransactionStatus'] ?? '');
-$transactionNo = trim($_GET['vnp_TransactionNo'] ?? '');
-$payDate = trim($_GET['vnp_PayDate'] ?? '');
-$bankCode = trim($_GET['vnp_BankCode'] ?? '');
-$vnpAmount = (int) ($_GET['vnp_Amount'] ?? 0);
+$txnRef = trim($input['vnp_TxnRef'] ?? '');
+$responseCode = trim($input['vnp_ResponseCode'] ?? '');
+$transactionStatus = trim($input['vnp_TransactionStatus'] ?? '');
+$transactionNo = trim($input['vnp_TransactionNo'] ?? '');
+$payDate = trim($input['vnp_PayDate'] ?? '');
+$bankCode = trim($input['vnp_BankCode'] ?? '');
+$vnpAmount = (int) ($input['vnp_Amount'] ?? 0);
+$paidAt = normalizeVnpayPayDate($payDate);
 
 $pdo = db();
 
@@ -27,12 +45,16 @@ $success = false;
 
 if ($txnRef !== '') {
     $stmt = $pdo->prepare('SELECT * FROM payments WHERE transaction_code = :transaction_code LIMIT 1');
-    $stmt->execute(['transaction_code' => $txnRef]);
+    $stmt->execute([
+        'transaction_code' => $txnRef,
+    ]);
     $payment = $stmt->fetch();
 
     if ($payment) {
         $orderStmt = $pdo->prepare('SELECT * FROM orders WHERE id = :id LIMIT 1');
-        $orderStmt->execute(['id' => $payment['order_id']]);
+        $orderStmt->execute([
+            'id' => $payment['order_id'],
+        ]);
         $order = $orderStmt->fetch();
     }
 }
@@ -53,9 +75,12 @@ if (!$isValid) {
             $newOrderStatus = $isCallbackSuccess ? 'confirmed' : 'cancelled';
 
             $pdo->beginTransaction();
+
             try {
                 $lockStmt = $pdo->prepare('SELECT * FROM payments WHERE id = :id LIMIT 1 FOR UPDATE');
-                $lockStmt->execute(['id' => $payment['id']]);
+                $lockStmt->execute([
+                    'id' => $payment['id'],
+                ]);
                 $lockedPayment = $lockStmt->fetch();
 
                 if ($lockedPayment && (string) $lockedPayment['status'] === 'pending') {
@@ -73,8 +98,8 @@ if (!$isValid) {
                         'status' => $newPaymentStatus,
                         'response_code' => $responseCode,
                         'bank_code' => $bankCode,
-                        'paid_at' => $payDate,
-                        'raw_response' => json_encode($_GET, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
+                        'paid_at' => $paidAt,
+                        'raw_response' => json_encode($input, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
                         'id' => $lockedPayment['id'],
                     ]);
 
@@ -99,7 +124,7 @@ if (!$isValid) {
                         'order_id' => $lockedPayment['order_id'],
                         'old_status' => 'pending',
                         'new_status' => $newOrderStatus,
-                        'note' => 'VNPAY return fallback. TransactionNo=' . $transactionNo . ', ResponseCode=' . $responseCode,
+                        'note' => 'VNPAY return. TransactionNo=' . $transactionNo . ', ResponseCode=' . $responseCode,
                         'changed_by' => 0,
                         'changed_by_name' => 'VNPAY_RETURN',
                     ]);
@@ -110,16 +135,21 @@ if (!$isValid) {
                 if ($pdo->inTransaction()) {
                     $pdo->rollBack();
                 }
+
                 $message = 'Có lỗi khi cập nhật kết quả thanh toán: ' . $exception->getMessage();
             }
 
             $stmt = $pdo->prepare('SELECT * FROM payments WHERE transaction_code = :transaction_code LIMIT 1');
-            $stmt->execute(['transaction_code' => $txnRef]);
+            $stmt->execute([
+                'transaction_code' => $txnRef,
+            ]);
             $payment = $stmt->fetch();
 
             if ($payment) {
                 $orderStmt = $pdo->prepare('SELECT * FROM orders WHERE id = :id LIMIT 1');
-                $orderStmt->execute(['id' => $payment['order_id']]);
+                $orderStmt->execute([
+                    'id' => $payment['order_id'],
+                ]);
                 $order = $orderStmt->fetch();
             }
         }
@@ -128,10 +158,6 @@ if (!$isValid) {
         $message = $success
             ? 'Thanh toán VNPAY thành công.'
             : 'Thanh toán VNPAY thất bại hoặc bị hủy.';
-
-        if ($success) {
-            unset($_SESSION['cart']);
-        }
     }
 }
 

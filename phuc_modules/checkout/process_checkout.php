@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/config/app.php';
+
 ensureSeedSessionData();
 requireLogin();
 
@@ -37,17 +38,12 @@ if (!array_key_exists($paymentMethod, paymentMethods())) {
 
 if ($paymentMethod === 'VNPAY') {
     if (
-        VNPAY_TMN_CODE === 'YOUR_TMN_CODE' ||
-        VNPAY_HASH_SECRET === 'YOUR_HASH_SECRET' ||
         trim(VNPAY_TMN_CODE) === '' ||
-        trim(VNPAY_HASH_SECRET) === ''
+        trim(VNPAY_HASH_SECRET) === '' ||
+        VNPAY_TMN_CODE === 'YOUR_TMN_CODE' ||
+        VNPAY_HASH_SECRET === 'YOUR_HASH_SECRET'
     ) {
-        setFlash('error', 'Chưa cấu hình tài khoản VNPAY sandbox.');
-        redirect('index.php');
-    }
-
-    if (strpos(BASE_URL, 'https://') !== 0) {
-        setFlash('error', 'VNPAY yêu cầu BASE_URL public dùng HTTPS.');
+        setFlash('error', 'Chưa cấu hình tài khoản VNPAY sandbox trong app.local.php');
         redirect('index.php');
     }
 }
@@ -60,9 +56,29 @@ try {
     $paymentStatus = $paymentMethod === 'VNPAY' ? 'pending' : 'unpaid';
 
     $insertOrder = $pdo->prepare(
-        'INSERT INTO orders (user_id, receiver_name, phone, address, note, total_amount, status, payment_method, payment_status)
-         VALUES (:user_id, :receiver_name, :phone, :address, :note, :total_amount, :status, :payment_method, :payment_status)'
+        'INSERT INTO orders (
+            user_id,
+            receiver_name,
+            phone,
+            address,
+            note,
+            total_amount,
+            status,
+            payment_method,
+            payment_status
+        ) VALUES (
+            :user_id,
+            :receiver_name,
+            :phone,
+            :address,
+            :note,
+            :total_amount,
+            :status,
+            :payment_method,
+            :payment_status
+        )'
     );
+
     $insertOrder->execute([
         'user_id' => currentUserId(),
         'receiver_name' => $receiverName,
@@ -78,8 +94,21 @@ try {
     $orderId = (int) $pdo->lastInsertId();
 
     $insertItem = $pdo->prepare(
-        'INSERT INTO order_items (order_id, comic_id, comic_name, price, quantity, subtotal)
-         VALUES (:order_id, :comic_id, :comic_name, :price, :quantity, :subtotal)'
+        'INSERT INTO order_items (
+            order_id,
+            comic_id,
+            comic_name,
+            price,
+            quantity,
+            subtotal
+        ) VALUES (
+            :order_id,
+            :comic_id,
+            :comic_name,
+            :price,
+            :quantity,
+            :subtotal
+        )'
     );
 
     foreach ($items as $item) {
@@ -96,13 +125,35 @@ try {
         ]);
     }
 
-    $txnRef = createTxnRef($orderId);
+    $rawTxnRef = createTxnRef($orderId);
+    $txnRef = preg_replace('/[^A-Za-z0-9]/', '', (string) $rawTxnRef);
+
+    if ($txnRef === null || $txnRef === '') {
+        $txnRef = 'ORD' . $orderId . date('YmdHis');
+    }
+
     $vnpCreateDate = date('YmdHis');
 
     $insertPayment = $pdo->prepare(
-        'INSERT INTO payments (order_id, method, amount, status, transaction_code, vnp_create_date, admin_note)
-         VALUES (:order_id, :method, :amount, :status, :transaction_code, :vnp_create_date, :admin_note)'
+        'INSERT INTO payments (
+            order_id,
+            method,
+            amount,
+            status,
+            transaction_code,
+            vnp_create_date,
+            admin_note
+        ) VALUES (
+            :order_id,
+            :method,
+            :amount,
+            :status,
+            :transaction_code,
+            :vnp_create_date,
+            :admin_note
+        )'
     );
+
     $insertPayment->execute([
         'order_id' => $orderId,
         'method' => $paymentMethod,
@@ -116,9 +167,23 @@ try {
     $paymentId = (int) $pdo->lastInsertId();
 
     $insertLog = $pdo->prepare(
-        'INSERT INTO order_logs (order_id, old_status, new_status, note, changed_by, changed_by_name)
-         VALUES (:order_id, :old_status, :new_status, :note, :changed_by, :changed_by_name)'
+        'INSERT INTO order_logs (
+            order_id,
+            old_status,
+            new_status,
+            note,
+            changed_by,
+            changed_by_name
+        ) VALUES (
+            :order_id,
+            :old_status,
+            :new_status,
+            :note,
+            :changed_by,
+            :changed_by_name
+        )'
     );
+
     $insertLog->execute([
         'order_id' => $orderId,
         'old_status' => 'new',
@@ -144,7 +209,8 @@ try {
             'total_amount' => $totals['total'],
         ];
 
-        redirect(createVnpayPaymentUrl($order, $payment, $bankCode));
+        $paymentUrl = createVnpayPaymentUrl($order, $payment, $bankCode);
+        redirect($paymentUrl);
     }
 
     unset($_SESSION['cart']);

@@ -5,24 +5,24 @@
 }
 
 :root {
-    --bg: #fff4f3;
-    --sidebar: #f6f5f3;
+    --bg: #f4f6fb;
+    --sidebar: #eef2ff;
     --panel: #ffffff;
-    --panel-soft: #ffedeb;
-    --panel-light: #ffe2df;
-    --panel-pink: #ffd2ce;
-    --text: #4e211e;
-    --muted: #834c48;
-    --accent: #a73300;
-    --accent-dark: #922c00;
-    --blue: #0846ed;
-    --blue-soft: #c7cfff;
-    --blue-border: #003cd3;
-    --dark: #240303;
-    --line: #e09c96;
-    --yellow: #fdd400;
-    --yellow-soft: #fff4b3;
-    --stone: #726863;
+    --panel-soft: #edf2ff;
+    --panel-light: #e2e8f0;
+    --panel-pink: #f8fafc;
+    --text: #1f2937;
+    --muted: #475569;
+    --accent: #2563eb;
+    --accent-dark: #1d4ed8;
+    --blue: #2563eb;
+    --blue-soft: #dbeafe;
+    --blue-border: #3b82f6;
+    --dark: #0f172a;
+    --line: #93c5fd;
+    --yellow: #f59e0b;
+    --yellow-soft: #fef3c7;
+    --stone: #94a3b8;
 }
 
 body {
@@ -54,7 +54,7 @@ select {
     z-index: 50;
     background: rgba(255,255,255,.86);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(224, 156, 150, .18);
+    border-bottom: 1px solid rgba(37, 99, 235, .18);
 }
 
 .topbar-inner {
@@ -87,7 +87,7 @@ select {
 
 .topnav a {
     font-size: 17px;
-    color: #645c59;
+    color: #475569;
 }
 
 .topnav a:hover {
@@ -101,7 +101,7 @@ select {
 }
 
 .top-icon {
-    color: #655c58;
+    color: #475569;
     cursor: pointer;
 }
 
@@ -176,15 +176,15 @@ select {
     padding: 16px 24px;
     font-size: 17px;
     font-weight: 700;
-    color: #726863;
+    color: #475569;
 }
 
 .menu a:hover {
-    background: rgba(244, 235, 223, .55);
+    background: rgba(59, 130, 246, .08);
 }
 
 .menu a.active {
-    background: #f4ebdf;
+    background: #dbeafe;
     color: var(--accent);
     border-top-right-radius: 18px;
     border-bottom-right-radius: 18px;
@@ -257,7 +257,7 @@ select {
     left: -26px;
     width: 120px;
     height: 120px;
-    background: rgba(255, 121, 74, 0.12);
+    background: rgba(37, 99, 235, 0.12);
     border-radius: 50%;
     filter: blur(32px);
     z-index: 0;

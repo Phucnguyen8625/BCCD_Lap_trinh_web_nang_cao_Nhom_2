@@ -34,24 +34,24 @@ $bannerList = [
 ];
 
 $truyenMoi = [
-    ['id' => 1,'title' => 'Kimetsu no Yaiba','chapter' => 'Chương 12','genre' => 'Phiêu lưu','status' => 'Mới ra mắt','image' => 'https://cdn.myanimelist.net/images/anime/1286/99889.jpg'],
-    ['id' => 2,'title' => 'Boku no Hero Academia','chapter' => 'Chương 8','genre' => 'Hành động','status' => 'Hot','image' => 'https://cdn.myanimelist.net/images/anime/10/78745.jpg'],
-    ['id' => 3,'title' => 'Jujutsu Kaisen','chapter' => 'Chương 20','genre' => 'Kỳ ảo','status' => 'Nổi bật','image' => 'https://cdn.myanimelist.net/images/anime/1171/109222.jpg'],
-    ['id' => 4,'title' => 'Tokyo Ghoul','chapter' => 'Chương 5','genre' => 'Bí ẩn','status' => 'Mới','image' => 'https://cdn.myanimelist.net/images/anime/5/64449.jpg'],
+    ['id' => 1,'title' => 'Hành Trình Ánh Sáng','chapter' => 'Chương 12','genre' => 'Phiêu lưu','status' => 'Mới ra mắt','image' => 'https://picsum.photos/300/420?random=11'],
+    ['id' => 2,'title' => 'Học Viện Dị Năng','chapter' => 'Chương 8','genre' => 'Hành động','status' => 'Hot','image' => 'https://picsum.photos/300/420?random=12'],
+    ['id' => 3,'title' => 'Lời Nguyền Hoàng Gia','chapter' => 'Chương 20','genre' => 'Kỳ ảo','status' => 'Nổi bật','image' => 'https://picsum.photos/300/420?random=13'],
+    ['id' => 4,'title' => 'Thành Phố Bóng Đêm','chapter' => 'Chương 5','genre' => 'Bí ẩn','status' => 'Mới','image' => 'https://picsum.photos/300/420?random=14'],
 ];
 
 $truyenCapNhat = [
-    ['id' => 5,'title' => 'Naruto','chapter' => 'Chương 45','genre' => 'Hành động','status' => 'Vừa cập nhật','image' => 'https://cdn.myanimelist.net/images/anime/13/17405.jpg'],
-    ['id' => 6,'title' => 'Kaichou wa Maid-sama','chapter' => 'Chương 31','genre' => 'Tình cảm','status' => 'Mới cập nhật','image' => 'https://cdn.myanimelist.net/images/anime/6/25254.jpg'],
-    ['id' => 7,'title' => 'Assassination Classroom','chapter' => 'Chương 27','genre' => 'Học đường','status' => 'Đang theo dõi','image' => 'https://cdn.myanimelist.net/images/anime/5/75639.jpg'],
-    ['id' => 8,'title' => 'Steins;Gate','chapter' => 'Chương 16','genre' => 'Phiêu lưu','status' => 'Mới cập nhật','image' => 'https://cdn.myanimelist.net/images/anime/5/73199.jpg'],
+    ['id' => 5,'title' => 'Kiếm Sĩ Cuối Cùng','chapter' => 'Chương 45','genre' => 'Hành động','status' => 'Vừa cập nhật','image' => 'https://picsum.photos/300/420?random=21'],
+    ['id' => 6,'title' => 'Công Chúa Và Bóng Tối','chapter' => 'Chương 31','genre' => 'Tình cảm','status' => 'Mới cập nhật','image' => 'https://picsum.photos/300/420?random=22'],
+    ['id' => 7,'title' => 'Sát Thủ Học Đường','chapter' => 'Chương 27','genre' => 'Học đường','status' => 'Đang theo dõi','image' => 'https://picsum.photos/300/420?random=23'],
+    ['id' => 8,'title' => 'Vương Quốc Trên Mây','chapter' => 'Chương 16','genre' => 'Phiêu lưu','status' => 'Mới cập nhật','image' => 'https://picsum.photos/300/420?random=24'],
 ];
 
 $truyenNoiBat = [
-    ['id' => 9,'title' => 'One Piece','chapter' => 'Chương 88','genre' => 'Fantasy','status' => 'Top đọc nhiều','image' => 'https://cdn.myanimelist.net/images/anime/6/73245.jpg'],
-    ['id' => 10,'title' => 'Fullmetal Alchemist','chapter' => 'Chương 73','genre' => 'Phiêu lưu','status' => 'Đề cử','image' => 'https://cdn.myanimelist.net/images/anime/10/75815.jpg'],
-    ['id' => 11,'title' => 'Death Note','chapter' => 'Chương 54','genre' => 'Trinh thám','status' => 'Nổi bật tuần','image' => 'https://cdn.myanimelist.net/images/anime/9/9453.jpg'],
-    ['id' => 12,'title' => 'Bleach','chapter' => 'Chương 60','genre' => 'Hành động','status' => 'Xu hướng','image' => 'https://cdn.myanimelist.net/images/anime/3/40451.jpg'],
+    ['id' => 9,'title' => 'Ma Pháp Tối Thượng','chapter' => 'Chương 88','genre' => 'Fantasy','status' => 'Top đọc nhiều','image' => 'https://picsum.photos/300/420?random=31'],
+    ['id' => 10,'title' => 'Huyền Thoại Long Ấn','chapter' => 'Chương 73','genre' => 'Phiêu lưu','status' => 'Đề cử','image' => 'https://picsum.photos/300/420?random=32'],
+    ['id' => 11,'title' => 'Đêm Trắng Thành Phố','chapter' => 'Chương 54','genre' => 'Trinh thám','status' => 'Nổi bật tuần','image' => 'https://picsum.photos/300/420?random=33'],
+    ['id' => 12,'title' => 'Chiến Binh Huyết Nguyệt','chapter' => 'Chương 60','genre' => 'Hành động','status' => 'Xu hướng','image' => 'https://picsum.photos/300/420?random=34'],
 ];
 ?>
 <!DOCTYPE html>

@@ -11,16 +11,16 @@ $currentPage = 'market';
 $danhMucNoiBat = ['Tất cả','Mới phát hành','Bán chạy','Đề cử','Giảm giá','Cao cấp'];
 
 $goiNoiBat = [
-    ['id' => 1,'title' => 'Kimetsu no Yaiba','author' => 'Koyoharu Gotouge','genre' => 'Phiêu lưu','price' => '49.000đ','old_price' => '79.000đ','badge' => 'Giảm 38%','category' => 'giam-gia','image' => 'https://cdn.myanimelist.net/images/anime/1286/99889.jpg'],
-    ['id' => 2,'title' => 'Boku no Hero Academia','author' => 'Kohei Horikoshi','genre' => 'Hành động','price' => '59.000đ','old_price' => '89.000đ','badge' => 'Hot','category' => 'ban-chay','image' => 'https://cdn.myanimelist.net/images/anime/10/78745.jpg'],
-    ['id' => 3,'title' => 'Jujutsu Kaisen','author' => 'Gege Akutami','genre' => 'Kỳ ảo','price' => '69.000đ','old_price' => '99.000đ','badge' => 'Đề cử','category' => 'de-cu','image' => 'https://cdn.myanimelist.net/images/anime/1171/109222.jpg'],
-    ['id' => 4,'title' => 'Tokyo Ghoul','author' => 'Sui Ishida','genre' => 'Bí ẩn','price' => '39.000đ','old_price' => '59.000đ','badge' => 'Mới','category' => 'moi-phat-hanh','image' => 'https://cdn.myanimelist.net/images/anime/5/64449.jpg'],
+    ['id' => 1,'title' => 'Hành Trình Ánh Sáng','author' => 'Nguyễn Thiên Ân','genre' => 'Phiêu lưu','price' => '49.000đ','old_price' => '79.000đ','badge' => 'Giảm 38%','category' => 'giam-gia','image' => 'https://picsum.photos/320/420?random=301'],
+    ['id' => 2,'title' => 'Học Viện Dị Năng','author' => 'Lê Quốc Bảo','genre' => 'Hành động','price' => '59.000đ','old_price' => '89.000đ','badge' => 'Hot','category' => 'ban-chay','image' => 'https://picsum.photos/320/420?random=302'],
+    ['id' => 3,'title' => 'Lời Nguyền Hoàng Gia','author' => 'Trần Mỹ Linh','genre' => 'Kỳ ảo','price' => '69.000đ','old_price' => '99.000đ','badge' => 'Đề cử','category' => 'de-cu','image' => 'https://picsum.photos/320/420?random=303'],
+    ['id' => 4,'title' => 'Thành Phố Bóng Đêm','author' => 'Phạm Gia Hưng','genre' => 'Bí ẩn','price' => '39.000đ','old_price' => '59.000đ','badge' => 'Mới','category' => 'moi-phat-hanh','image' => 'https://picsum.photos/320/420?random=304'],
 ];
 
 $sanPhamSo = [
-    ['id' => 5,'title' => 'Naruto','desc' => 'Manga hành động bán chạy nhất Nhật Bản về cuộc hành trình của một ninja trẻ.','chapter' => '45 chương','price' => '89.000đ','image' => 'https://cdn.myanimelist.net/images/anime/13/17405.jpg'],
-    ['id' => 6,'title' => 'Kaichou wa Maid-sama','desc' => 'Manga tình cảm lãng mạn về chủ tịch học sinh và cô hầu gái bí ẩn.','chapter' => '31 chương','price' => '75.000đ','image' => 'https://cdn.myanimelist.net/images/anime/6/25254.jpg'],
-    ['id' => 7,'title' => 'Assassination Classroom','desc' => 'Manga học đường đặc biệt về lớp học và thầy giáo là một sinh vật bí ẩn.','chapter' => '27 chương','price' => '55.000đ','image' => 'https://cdn.myanimelist.net/images/anime/5/75639.jpg'],
+    ['id' => 5,'title' => 'Kiếm Sĩ Cuối Cùng','desc' => 'Bộ truyện hành động bán chạy với bản số đầy đủ chất lượng cao.','chapter' => '45 chương','price' => '89.000đ','image' => 'https://picsum.photos/320/420?random=305'],
+    ['id' => 6,'title' => 'Công Chúa Và Bóng Tối','desc' => 'Phiên bản số độc quyền kèm ảnh bìa đặc biệt và trang bonus.','chapter' => '31 chương','price' => '75.000đ','image' => 'https://picsum.photos/320/420?random=306'],
+    ['id' => 7,'title' => 'Sát Thủ Học Đường','desc' => 'Trọn bộ tập đầu dành cho người đọc mới tham gia nền tảng.','chapter' => '27 chương','price' => '55.000đ','image' => 'https://picsum.photos/320/420?random=307'],
 ];
 
 $comboUuDai = [

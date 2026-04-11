@@ -12,14 +12,14 @@ $baseUrl = '../';
 $danhMuc = ['Tất cả', 'Hành động', 'Phiêu lưu', 'Kỳ ảo', 'Học đường', 'Tình cảm', 'Bí ẩn'];
 
 $thuVienTruyen = [
-    ['id' => 1,'title' => 'Kimetsu no Yaiba','chapter' => 'Chương 12','genre' => 'Phiêu lưu','status' => 'Đang đọc','category' => 'phieu-luu','rating' => '4.8','image' => 'https://cdn.myanimelist.net/images/anime/1286/99889.jpg'],
-    ['id' => 2,'title' => 'Boku no Hero Academia','chapter' => 'Chương 8','genre' => 'Hành động','status' => 'Yêu thích','category' => 'hanh-dong','rating' => '4.9','image' => 'https://cdn.myanimelist.net/images/anime/10/78745.jpg'],
-    ['id' => 3,'title' => 'Jujutsu Kaisen','chapter' => 'Chương 20','genre' => 'Kỳ ảo','status' => 'Đã lưu','category' => 'ky-ao','rating' => '4.7','image' => 'https://cdn.myanimelist.net/images/anime/1171/109222.jpg'],
-    ['id' => 4,'title' => 'Tokyo Ghoul','chapter' => 'Chương 5','genre' => 'Bí ẩn','status' => 'Theo dõi','category' => 'bi-an','rating' => '4.6','image' => 'https://cdn.myanimelist.net/images/anime/5/64449.jpg'],
-    ['id' => 5,'title' => 'Naruto','chapter' => 'Chương 45','genre' => 'Hành động','status' => 'Đang đọc','category' => 'hanh-dong','rating' => '4.9','image' => 'https://cdn.myanimelist.net/images/anime/13/17405.jpg'],
-    ['id' => 6,'title' => 'Kaichou wa Maid-sama','chapter' => 'Chương 31','genre' => 'Tình cảm','status' => 'Đã lưu','category' => 'tinh-cam','rating' => '4.5','image' => 'https://cdn.myanimelist.net/images/anime/6/25254.jpg'],
-    ['id' => 7,'title' => 'Assassination Classroom','chapter' => 'Chương 27','genre' => 'Học đường','status' => 'Theo dõi','category' => 'hoc-duong','rating' => '4.4','image' => 'https://cdn.myanimelist.net/images/anime/5/75639.jpg'],
-    ['id' => 8,'title' => 'Steins;Gate','chapter' => 'Chương 16','genre' => 'Phiêu lưu','status' => 'Yêu thích','category' => 'phieu-luu','rating' => '4.8','image' => 'https://cdn.myanimelist.net/images/anime/5/73199.jpg'],
+    ['id' => 1,'title' => 'Hành Trình Ánh Sáng','chapter' => 'Chương 12','genre' => 'Phiêu lưu','status' => 'Đang đọc','category' => 'phieu-luu','rating' => '4.8','image' => 'https://picsum.photos/320/420?random=101'],
+    ['id' => 2,'title' => 'Học Viện Dị Năng','chapter' => 'Chương 8','genre' => 'Hành động','status' => 'Yêu thích','category' => 'hanh-dong','rating' => '4.9','image' => 'https://picsum.photos/320/420?random=102'],
+    ['id' => 3,'title' => 'Lời Nguyền Hoàng Gia','chapter' => 'Chương 20','genre' => 'Kỳ ảo','status' => 'Đã lưu','category' => 'ky-ao','rating' => '4.7','image' => 'https://picsum.photos/320/420?random=103'],
+    ['id' => 4,'title' => 'Thành Phố Bóng Đêm','chapter' => 'Chương 5','genre' => 'Bí ẩn','status' => 'Theo dõi','category' => 'bi-an','rating' => '4.6','image' => 'https://picsum.photos/320/420?random=104'],
+    ['id' => 5,'title' => 'Kiếm Sĩ Cuối Cùng','chapter' => 'Chương 45','genre' => 'Hành động','status' => 'Đang đọc','category' => 'hanh-dong','rating' => '4.9','image' => 'https://picsum.photos/320/420?random=105'],
+    ['id' => 6,'title' => 'Công Chúa Và Bóng Tối','chapter' => 'Chương 31','genre' => 'Tình cảm','status' => 'Đã lưu','category' => 'tinh-cam','rating' => '4.5','image' => 'https://picsum.photos/320/420?random=106'],
+    ['id' => 7,'title' => 'Sát Thủ Học Đường','chapter' => 'Chương 27','genre' => 'Học đường','status' => 'Theo dõi','category' => 'hoc-duong','rating' => '4.4','image' => 'https://picsum.photos/320/420?random=107'],
+    ['id' => 8,'title' => 'Vương Quốc Trên Mây','chapter' => 'Chương 16','genre' => 'Phiêu lưu','status' => 'Yêu thích','category' => 'phieu-luu','rating' => '4.8','image' => 'https://picsum.photos/320/420?random=108'],
 ];
 ?>
 <!DOCTYPE html>

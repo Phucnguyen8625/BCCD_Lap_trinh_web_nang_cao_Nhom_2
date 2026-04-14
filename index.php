@@ -4,12 +4,15 @@ session_start(); // Initialize session for Shopping Cart
 
 require_once __DIR__ . '/controllers/HomeController.php';
 require_once __DIR__ . '/controllers/CartController.php';
+require_once __DIR__ . '/controllers/OrderController.php';
 
 $controllerType = isset($_GET['controller']) ? $_GET['controller'] : 'home';
 $action = isset($_GET['action']) ? $_GET['action'] : 'index';
 
 if ($controllerType == 'cart') {
     $controller = new CartController();
+} elseif ($controllerType == 'order') {
+    $controller = new OrderController();
 } else {
     $controller = new HomeController();
 }

@@ -52,62 +52,48 @@ $pdo = db();
 $pdo->beginTransaction();
 
 try {
-    $orderStatus = $paymentMethod === 'VNPAY' ? 'pending' : 'confirmed';
-    $paymentStatus = $paymentMethod === 'VNPAY' ? 'pending' : 'unpaid';
+    $orderStatus = $paymentMethod === 'VNPAY' ? 'pending' : 'pending';
 
     $insertOrder = $pdo->prepare(
         'INSERT INTO orders (
-            user_id,
-            receiver_name,
-            phone,
+            customer_name,
+            customer_phone,
+            customer_email,
             address,
-            note,
             total_amount,
-            status,
-            payment_method,
-            payment_status
+            status
         ) VALUES (
-            :user_id,
             :receiver_name,
             :phone,
+            :email,
             :address,
-            :note,
             :total_amount,
-            :status,
-            :payment_method,
-            :payment_status
+            :status
         )'
     );
 
     $insertOrder->execute([
-        'user_id' => currentUserId(),
         'receiver_name' => $receiverName,
         'phone' => $phone,
-        'address' => $address,
-        'note' => $note,
+        'email' => currentUserName() . '@example.com', // fake email since checkout doesn't ask for it
+        'address' => $address . ($note ? " (Ghi chú: $note)" : ""),
         'total_amount' => $totals['total'],
         'status' => $orderStatus,
-        'payment_method' => $paymentMethod,
-        'payment_status' => $paymentStatus,
     ]);
 
     $orderId = (int) $pdo->lastInsertId();
 
     $insertItem = $pdo->prepare(
-        'INSERT INTO order_items (
+        'INSERT INTO order_details (
             order_id,
             comic_id,
-            comic_name,
-            price,
             quantity,
-            subtotal
+            price
         ) VALUES (
             :order_id,
             :comic_id,
-            :comic_name,
-            :price,
             :quantity,
-            :subtotal
+            :price
         )'
     );
 
@@ -118,10 +104,8 @@ try {
         $insertItem->execute([
             'order_id' => $orderId,
             'comic_id' => (int) $item['comic_id'],
-            'comic_name' => $item['name'],
-            'price' => $price,
             'quantity' => $quantity,
-            'subtotal' => $price * $quantity,
+            'price' => $price,
         ]);
     }
 
@@ -137,61 +121,29 @@ try {
     $insertPayment = $pdo->prepare(
         'INSERT INTO payments (
             order_id,
-            method,
+            payment_method,
             amount,
-            status,
-            transaction_code,
-            vnp_create_date,
-            admin_note
+            payment_status,
+            transaction_id
         ) VALUES (
             :order_id,
             :method,
             :amount,
             :status,
-            :transaction_code,
-            :vnp_create_date,
-            :admin_note
+            :transaction_code
         )'
     );
 
     $insertPayment->execute([
         'order_id' => $orderId,
-        'method' => $paymentMethod,
+        'method' => $paymentMethod === 'VNPAY' ? 'vnpay' : 'cod',
         'amount' => $totals['total'],
-        'status' => $paymentMethod === 'VNPAY' ? 'pending' : 'unpaid',
+        'status' => $paymentMethod === 'VNPAY' ? 'pending' : 'success',
         'transaction_code' => $txnRef,
-        'vnp_create_date' => $vnpCreateDate,
-        'admin_note' => 'Tạo tự động từ checkout.',
     ]);
 
+    // MVC version doesn't use order_logs, skipping insertLog
     $paymentId = (int) $pdo->lastInsertId();
-
-    $insertLog = $pdo->prepare(
-        'INSERT INTO order_logs (
-            order_id,
-            old_status,
-            new_status,
-            note,
-            changed_by,
-            changed_by_name
-        ) VALUES (
-            :order_id,
-            :old_status,
-            :new_status,
-            :note,
-            :changed_by,
-            :changed_by_name
-        )'
-    );
-
-    $insertLog->execute([
-        'order_id' => $orderId,
-        'old_status' => 'new',
-        'new_status' => $orderStatus,
-        'note' => 'Tạo đơn hàng từ trang checkout.',
-        'changed_by' => currentUserId(),
-        'changed_by_name' => currentUserName(),
-    ]);
 
     $pdo->commit();
 
@@ -215,7 +167,7 @@ try {
 
     unset($_SESSION['cart']);
     setFlash('success', 'Đặt hàng thành công với phương thức COD.');
-    redirect('../admin/orders/detail.php?id=' . $orderId);
+    redirect('../../index.php?controller=checkout&action=success&order_id=' . $orderId);
 } catch (Throwable $exception) {
     if ($pdo->inTransaction()) {
         $pdo->rollBack();

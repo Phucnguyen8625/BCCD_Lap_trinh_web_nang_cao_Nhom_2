@@ -7,16 +7,33 @@
             <i class="fas fa-check-circle text-5xl"></i>
         </div>
         
-        <h1 class="text-3xl font-extrabold text-gray-800 mb-4 h-auto">Đặt hàng thành công!</h1>
+        <h1 class="text-3xl font-extrabold text-gray-800 mb-4 h-auto">
+            <?php 
+                if(isset($_GET['status']) && $_GET['status'] == 'failed') {
+                    echo 'Thanh toán không thành công';
+                } else {
+                    echo 'Đặt hàng thành công!';
+                }
+            ?>
+        </h1>
         <p class="text-gray-500 mb-8 max-w-md mx-auto leading-relaxed">
-            Cảm ơn bạn đã tin tưởng MangaStore. Đơn hàng <strong class="text-primary font-bold italic">#<?php echo htmlspecialchars($orderId); ?></strong> của bạn đã được hệ thống ghi nhận và đang được xử lý.
+            <?php if(isset($_GET['status']) && $_GET['status'] == 'failed'): ?>
+                Giao dịch của bạn đã bị hủy hoặc không thành công. Đơn hàng <strong class="text-primary font-bold italic">#<?php echo htmlspecialchars($orderId); ?></strong> vẫn được lưu ở trạng thái chờ xử lý.
+            <?php else: ?>
+                Cảm ơn bạn đã tin tưởng MangaStore. Đơn hàng <strong class="text-primary font-bold italic">#<?php echo htmlspecialchars($orderId); ?></strong> của bạn đã được hệ thống ghi nhận và đang được xử lý.
+            <?php endif; ?>
         </p>
 
-        <?php if(isset($_GET['method']) && $_GET['method'] == 'vnpay_mock'): ?>
-            <div class="mb-8 p-4 bg-blue-50 border border-blue-100 rounded-lg">
-                <p class="text-sm text-blue-700">
-                    <i class="fas fa-info-circle mr-2"></i> <strong>(Mô phỏng)</strong> Đơn hàng đã được thanh toán qua VNPAY. Bạn có thể kiểm tra trạng thái trong 
-                    <a href="index.php?controller=userorder" class="underline font-bold">Lịch sử đơn hàng</a>.
+        <?php if(isset($_GET['status']) && $_GET['status'] == 'success'): ?>
+            <div class="mb-8 p-4 bg-green-50 border border-green-100 rounded-lg">
+                <p class="text-sm text-green-700">
+                    <i class="fas fa-check-circle mr-2"></i> <strong>Thành công:</strong> Thanh toán qua VNPAY đã hoàn tất.
+                </p>
+            </div>
+        <?php elseif(isset($_GET['status']) && $_GET['status'] == 'failed'): ?>
+            <div class="mb-8 p-4 bg-red-50 border border-red-100 rounded-lg">
+                <p class="text-sm text-red-700">
+                    <i class="fas fa-exclamation-triangle mr-2"></i> <strong>Lưu ý:</strong> <?php echo htmlspecialchars($message ?: 'Thanh toán chưa hoàn thành.'); ?>
                 </p>
             </div>
         <?php else: ?>

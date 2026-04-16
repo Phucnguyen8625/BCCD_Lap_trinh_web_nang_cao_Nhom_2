@@ -2,6 +2,10 @@
 // Simple Router for User Frontend
 session_start();
 
+require_once __DIR__ . '/config/config.php';
+require_once __DIR__ . '/phuc_modules/helpers/vnpay.php';
+require_once __DIR__ . '/config/database.php';
+
 require_once __DIR__ . '/controllers/HomeController.php';
 require_once __DIR__ . '/controllers/CartController.php';
 require_once __DIR__ . '/controllers/CheckoutController.php';

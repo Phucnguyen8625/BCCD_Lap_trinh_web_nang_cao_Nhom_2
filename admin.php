@@ -1,6 +1,7 @@
 <?php
 // Strict Router for Admin Modules
 session_start();
+require_once __DIR__ . '/config/config.php';
 
 // Security Guard: Check if user is logged in and has admin role
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {

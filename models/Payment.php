@@ -3,21 +3,22 @@ class Payment {
     private $conn;
 
     public function __construct() {
-        $db = new \PDO("mysql:host=localhost;dbname=ban_truyen_tranh;charset=utf8", "root", "");
-        $this->conn = $db;
+        require_once __DIR__ . '/../config/database.php';
+        $database = new Database();
+        $this->conn = $database->getConnection();
     }
 
     public function getAllPayments() {
         $stmt = $this->conn->prepare("SELECT p.*, o.customer_name FROM payments p JOIN orders o ON p.order_id = o.id ORDER BY p.created_at DESC");
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function getPaymentById($id) {
         $stmt = $this->conn->prepare("SELECT p.*, o.customer_name FROM payments p JOIN orders o ON p.order_id = o.id WHERE p.id = :id");
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
     public function createPayment($order_id, $payment_method, $amount, $status, $transaction_id = null) {
@@ -34,6 +35,14 @@ class Payment {
         $stmt = $this->conn->prepare("UPDATE payments SET payment_status = :status WHERE id = :id");
         $stmt->bindParam(':status', $status);
         $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+
+    public function updateStatusByTxnRef($txnRef, $status, $gateway_txn_id = null) {
+        $stmt = $this->conn->prepare("UPDATE payments SET payment_status = :status, transaction_id = :gateway_id WHERE transaction_id = :txn_ref");
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':gateway_id', $gateway_txn_id);
+        $stmt->bindParam(':txn_ref', $txnRef);
         return $stmt->execute();
     }
 }

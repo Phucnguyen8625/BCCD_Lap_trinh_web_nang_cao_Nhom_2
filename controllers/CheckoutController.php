@@ -92,8 +92,15 @@ class CheckoutController {
             unset($_SESSION['cart']);
 
             if ($paymentMethod === 'vnpay') {
-                $this->payment->createPayment($orderId, 'vnpay', $totalAmount, 'pending');
-                header("Location: index.php?controller=checkout&action=success&order_id=$orderId&method=vnpay_mock");
+                $vnp_txn_ref = 'ORD' . $orderId . '_' . time();
+                $this->payment->createPayment($orderId, 'vnpay', $totalAmount, 'pending', $vnp_txn_ref);
+                
+                // Chuẩn bị dữ liệu cho VNPay Helper
+                $vnpOrder = ['id' => $orderId, 'total_amount' => $totalAmount];
+                $vnpPayment = ['transaction_code' => $vnp_txn_ref, 'vnp_create_date' => date('YmdHis')];
+                
+                $vnpayUrl = createVnpayPaymentUrl($vnpOrder, $vnpPayment);
+                header("Location: " . $vnpayUrl);
                 exit();
             } else {
                 $this->payment->createPayment($orderId, 'cod', $totalAmount, 'pending');
@@ -105,6 +112,7 @@ class CheckoutController {
 
     public function success() {
         $orderId = isset($_GET['order_id']) ? $_GET['order_id'] : '';
+        $message = isset($_GET['message']) ? $_GET['message'] : '';
         
         $database = new Database();
         $db = $database->getConnection();
@@ -112,6 +120,27 @@ class CheckoutController {
         $categories = $categoryModel->getAllActive();
 
         require_once __DIR__ . '/../views/user/checkout/success.php';
+    }
+
+    public function vnpay_return() {
+        $vnp_data = $_GET;
+        if (vnpayVerifyResponse($vnp_data)) {
+            $order_info = explode('_', $vnp_data['vnp_TxnRef']);
+            $orderId = str_replace('ORD', '', $order_info[0]);
+            
+            if ($vnp_data['vnp_ResponseCode'] == '00') {
+                // Thanh toán thành công
+                $this->payment->updateStatusByTxnRef($vnp_data['vnp_TxnRef'], 'success', $vnp_data['vnp_TransactionNo']);
+                header("Location: index.php?controller=checkout&action=success&order_id=$orderId&status=success");
+            } else {
+                // Thanh toán thất bại hoặc hủy
+                $this->payment->updateStatusByTxnRef($vnp_data['vnp_TxnRef'], 'failed', $vnp_data['vnp_TransactionNo']);
+                header("Location: index.php?controller=checkout&action=success&order_id=$orderId&status=failed&message=Giao dịch không thành công");
+            }
+        } else {
+            header("Location: index.php?controller=checkout&action=success&error=Chữ ký không hợp lệ");
+        }
+        exit();
     }
 }
 ?>

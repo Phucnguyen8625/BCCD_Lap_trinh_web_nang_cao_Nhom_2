@@ -49,6 +49,19 @@ try {
     } else {
         echo "OK";
     }
+    echo " OK</li>";
+
+    // 4. Tạo tài khoản Admin mặc định nếu chưa có
+    echo "<li>Kiểm tra tài khoản Admin... ";
+    $checkAdmin = $db->query("SELECT id FROM users WHERE role = 'admin' LIMIT 1");
+    if ($checkAdmin->rowCount() == 0) {
+        $hashedPassword = password_hash('admin123', PASSWORD_DEFAULT);
+        $db->exec("INSERT INTO users (full_name, username, email, password, role, status) 
+                   VALUES ('Administrator', 'admin', 'admin@mangastore.vn', '$hashedPassword', 'admin', 'active')");
+        echo "<b>Đã tạo tài khoản admin mặc định (admin / admin123)</b>";
+    } else {
+        echo "OK";
+    }
     echo "</li>";
 
     echo "<h3 style='color: green;'>Đồng bộ hoàn tất! Bạn có thể quay lại sử dụng website.</h3>";

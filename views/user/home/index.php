@@ -1,104 +1,7 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MangaStore - Cửa hàng Truyện Tranh Online</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#4c2d73', // NetTruyen purple
-                        secondary: '#f7941d', // Orange warning/accents
-                        price: '#e53e3e',
-                        navlink: '#333333',
-                        bordercolor: '#ebebeb',
-                        darkerbg: '#f9f9f9'
-                    },
-                    fontFamily: {
-                        sans: ['Roboto', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { background-color: #ededed; }
-        .text-shadow { text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
-        .image-overlay {
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
-        }
-        .comic-card:hover { transform: translateY(-3px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .nav-item:hover { color: #f7941d; }
-    </style>
-</head>
-<body class="font-sans text-gray-800">
+<?php $pageTitle = 'Cửa hàng Truyện Tranh Online'; ?>
+<?php require_once __DIR__ . '/../partials/header.php'; ?>
+<?php // ==== HOME PAGE CONTENT BELOW ==== ?>
 
-    <!-- Top Header -->
-    <header class="bg-primary pt-3 pb-3 px-4 relative" style="background-image: url('https://st.nettruyen.work/Data/Sites/1/media/bn-bg.jpg'); background-size: cover; background-position: center;">
-        <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between">
-            <!-- Logo -->
-            <div class="w-full md:w-1/4 mb-4 md:mb-0 text-center md:text-left flex items-center h-12">
-                <a href="index.php" class="text-3xl font-bold text-white tracking-widest pl-2" style="font-family: 'Verdana', sans-serif; text-shadow: 2px 2px 0px #f7941d;">MangaStore</a>
-            </div>
-
-            <!-- Search Bar -->
-            <div class="w-full md:w-2/4 px-4 flex justify-center">
-                <div class="relative w-full max-w-md">
-                    <input type="text" class="w-full h-10 pl-4 pr-10 rounded-sm focus:outline-none focus:ring-1 focus:ring-primary text-sm" placeholder="Tìm kiếm tựa truyện, tác giả...">
-                    <button class="absolute top-0 right-0 h-10 w-10 text-gray-500 hover:text-primary transition">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Right utilities -->
-            <div class="w-full md:w-1/4 flex items-center justify-center md:justify-end text-yellow-300 text-sm mt-4 md:mt-0 space-x-6">
-                <!-- Shopping Cart -->
-                <a href="index.php?controller=cart" class="relative hover:text-white transition group flex items-center space-x-1">
-                    <i class="fas fa-shopping-cart text-lg"></i>
-                    <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
-                        <?php echo isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : '0'; ?>
-                    </span>
-                    <span class="ml-2 hidden lg:inline">Giỏ hàng</span>
-                </a>
-                <!-- User Account -->
-                <div class="relative group cursor-pointer text-white flex items-center space-x-1 hover:text-gray-300">
-                    <i class="fas fa-user mb-1"></i>
-                    <span>Tài khoản</span>
-                    <i class="fas fa-caret-down text-xs mb-1"></i>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Navigation -->
-    <nav class="bg-white shadow">
-        <div class="max-w-6xl mx-auto">
-            <ul class="flex flex-wrap items-center text-sm font-medium">
-                <li><a href="/" class="block py-3 px-4 text-navlink hover:text-primary border-r border-bordercolor"><i class="fas fa-home"></i></a></li>
-                <li><a href="#" class="block py-3 px-4 text-navlink hover:text-secondary border-r border-bordercolor">TRUYỆN SALE HOT</a></li>
-                <li class="relative group">
-                    <a href="#" class="block py-3 px-4 text-navlink hover:text-secondary border-r border-bordercolor flex items-center space-x-1">
-                        <span>DANH MỤC TRUYỆN</span> <i class="fas fa-caret-down text-xs"></i>
-                    </a>
-                </li>
-                <li><a href="#" class="block py-3 px-4 text-navlink hover:text-secondary border-r border-bordercolor">ĐƠN HÀNG CỦA TÔI</a></li>
-                <li class="relative group">
-                    <a href="#" class="block py-3 px-4 text-navlink hover:text-secondary border-r border-bordercolor flex items-center space-x-1">
-                        <span>BÁN CHẠY NHẤT</span> <i class="fas fa-caret-down text-xs"></i>
-                    </a>
-                </li>
-                <li><a href="#" class="block py-3 px-4 text-navlink hover:text-secondary border-r border-bordercolor">TÌM SÁCH</a></li>
-                <li><a href="#" class="block py-3 px-4 text-navlink hover:text-secondary border-r border-bordercolor">TRUYỆN COMBO</a></li>
-            </ul>
-        </div>
-    </nav>
 
     <!-- Main Container -->
     <main class="max-w-6xl mx-auto my-4 bg-white p-4 shadow-sm">
@@ -127,12 +30,13 @@
                         <img src="<?php echo $comic['image']; ?>" alt="Cover" class="w-full h-full object-cover">
                         <!-- Add to cart overlay popup -->
                         <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
-                            <a href="index.php?controller=cart&action=add&id=1" class="bg-secondary text-white font-bold py-2 px-4 rounded-xl flex items-center transform scale-90 group-hover:scale-100 transition">
+                            <a href="index.php?controller=cart&action=add&id=<?php echo isset($comic['id']) ? $comic['id'] : 1; ?>" class="bg-secondary text-white font-bold py-2 px-4 rounded-xl flex items-center transform scale-90 group-hover:scale-100 transition">
                                 <i class="fas fa-cart-plus mr-2"></i> Mua ngay
                             </a>
                         </div>
                     </div>
                     <div class="p-2 flex-grow flex flex-col justify-between">
+                        <div class="text-[10px] text-gray-500 uppercase tracking-tighter mb-1 font-bold truncate"><?php echo htmlspecialchars($comic['category'] ?? ''); ?></div>
                         <div class="text-gray-800 text-sm font-semibold truncate hover:text-blue-600" title="<?php echo htmlspecialchars($comic['title']); ?>"><?php echo htmlspecialchars($comic['title']); ?></div>
                         <div class="mt-2 flex items-baseline space-x-2">
                             <span class="text-price font-bold text-lg"><?php echo $comic['price']; ?>đ</span>
@@ -174,6 +78,7 @@
                             </div>
                         </div>
                         <div class="mt-2 pl-1 h-16 flex flex-col justify-between">
+                            <div class="text-[10px] text-gray-500 uppercase tracking-tighter mb-1 font-bold truncate"><?php echo htmlspecialchars($comic['category'] ?? ''); ?></div>
                             <h3 class="text-sm font-medium text-gray-800 line-clamp-2 hover:text-blue-500 cursor-pointer leading-tight" title="<?php echo htmlspecialchars($comic['title']); ?>">
                                 <?php echo htmlspecialchars($comic['title']); ?>
                             </h3>
@@ -187,7 +92,7 @@
 
                 <!-- Pagination Placeholder -->
                 <div class="flex justify-center mt-6">
-                    <button class="bg-white border border-gray-300 text-gray-600 hover:text-primary hover:border-primary px-4 py-2 font-medium rounded-sm text-sm transition">XEM THÊM SẢN PHẨM</button>
+                    <a href="index.php?controller=collection&type=all" class="bg-white border border-gray-300 text-gray-600 hover:text-primary hover:border-primary px-8 py-2.5 font-bold rounded-xl text-sm transition shadow-sm uppercase italic">XEM THÊM SẢN PHẨM</a>
                 </div>
             </div>
 
@@ -195,63 +100,95 @@
             <div class="w-full lg:w-1/3 px-2 mt-6 lg:mt-0">
                 <!-- Tabs -->
                 <div class="flex border-b border-gray-200 text-sm font-medium mb-4">
-                    <button class="w-1/3 py-2 text-primary border-b-2 border-primary focus:outline-none font-bold">Top Bán Chạy</button>
-                    <button class="w-1/3 py-2 text-gray-500 focus:outline-none hover:text-gray-700">Giá rẻ</button>
-                    <button class="w-1/3 py-2 text-gray-500 focus:outline-none hover:text-gray-700">Pre-order</button>
+                    <button onclick="switchTab('bestseller', this)" class="tab-btn w-1/3 py-2 text-primary border-b-2 border-primary focus:outline-none font-bold">Top Bán Chạy</button>
+                    <button onclick="switchTab('cheap', this)" class="tab-btn w-1/3 py-2 text-gray-500 focus:outline-none hover:text-gray-700">Giá rẻ</button>
+                    <button onclick="switchTab('preorder', this)" class="tab-btn w-1/3 py-2 text-gray-500 focus:outline-none hover:text-gray-700">Pre-order</button>
                 </div>
 
                 <!-- Top List -->
                 <div class="space-y-4">
-                    <?php foreach($topComics as $index => $comic): ?>
-                    <div class="flex items-center justify-between border-b border-dashed border-gray-200 pb-2">
-                        <div class="flex items-center space-x-3 w-[70%]">
-                            <span class="text-2xl font-bold <?php echo ($index < 3) ? 'text-secondary' : 'text-gray-400'; ?> w-8 text-center">
-                                <?php echo $comic['rank']; ?>
-                            </span>
+                    <div id="tab-bestseller" class="tab-content">
+                        <?php foreach($topComics as $index => $comic): ?>
+                        <div class="flex items-center justify-between border-b border-dashed border-gray-200 pb-2">
+                            <div class="flex items-center space-x-3 w-[70%]">
+                                <span class="text-2xl font-bold <?php echo ($index < 3) ? 'text-secondary' : 'text-gray-400'; ?> w-8 text-center">
+                                    <?php echo $comic['rank']; ?>
+                                </span>
+                                <div class="w-12 h-16 bg-gray-200 flex-shrink-0 border border-gray-100">
+                                    <img src="<?php echo $comic['image']; ?>" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1 overflow-hidden">
+                                    <h4 class="text-sm font-semibold text-gray-800 truncate hover:text-blue-500 cursor-pointer" title="<?php echo htmlspecialchars($comic['title']); ?>">
+                                        <a href="index.php?controller=comic&action=show&id=<?php echo $comic['id']; ?>"><?php echo htmlspecialchars($comic['title']); ?></a>
+                                    </h4>
+                                    <div class="text-xs font-bold text-price mt-1">
+                                        <p><?php echo $comic['price']; ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-xs text-green-600 font-medium text-right bg-green-50 px-2 py-1 rounded">
+                                Đã bán: <?php echo $comic['sold']; ?>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                        <a href="index.php?controller=collection&type=bestseller" class="block text-center text-xs text-blue-500 mt-4 hover:underline">Xem tất cả bán chạy</a>
+                    </div>
+
+                    <div id="tab-cheap" class="tab-content hidden">
+                        <?php foreach($cheapComics as $comic): ?>
+                        <div class="flex items-center space-x-3 border-b border-dashed border-gray-200 pb-2">
                             <div class="w-12 h-16 bg-gray-200 flex-shrink-0 border border-gray-100">
                                 <img src="<?php echo $comic['image']; ?>" class="w-full h-full object-cover">
                             </div>
                             <div class="flex-1 overflow-hidden">
-                                <h4 class="text-sm font-semibold text-gray-800 truncate hover:text-blue-500 cursor-pointer" title="<?php echo htmlspecialchars($comic['title']); ?>">
-                                    <?php echo htmlspecialchars($comic['title']); ?>
+                                <h4 class="text-sm font-semibold text-gray-800 truncate hover:text-blue-500 cursor-pointer">
+                                    <a href="index.php?controller=comic&action=show&id=<?php echo $comic['id']; ?>"><?php echo htmlspecialchars($comic['title']); ?></a>
                                 </h4>
                                 <div class="text-xs font-bold text-price mt-1">
                                     <p><?php echo $comic['price']; ?></p>
                                 </div>
                             </div>
+                            <a href="index.php?controller=cart&action=add&id=<?php echo $comic['id']; ?>" class="text-[10px] bg-secondary text-white px-2 py-1 rounded font-bold uppercase transition hover:bg-orange-600">Mua ngay</a>
                         </div>
-                        <div class="text-xs text-green-600 font-medium text-right bg-green-50 px-2 py-1 rounded">
-                            Đã bán: <?php echo $comic['sold']; ?>
-                        </div>
+                        <?php endforeach; ?>
+                        <a href="index.php?controller=collection&type=all" class="block text-center text-xs text-blue-500 mt-4 hover:underline">Xem tất cả sản phẩm</a>
                     </div>
-                    <?php endforeach; ?>
+
+                    <div id="tab-preorder" class="tab-content hidden">
+                        <?php foreach($preComics as $comic): ?>
+                        <div class="flex items-center space-x-3 border-b border-dashed border-gray-200 pb-2">
+                            <div class="w-12 h-16 bg-gray-200 flex-shrink-0 border border-gray-100">
+                                <img src="<?php echo $comic['image']; ?>" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 overflow-hidden">
+                                <h4 class="text-sm font-semibold text-gray-800 truncate hover:text-blue-500 cursor-pointer"><?php echo htmlspecialchars($comic['title']); ?></h4>
+                                <div class="text-xs font-bold text-price mt-1">
+                                    <p><?php echo $comic['price']; ?></p>
+                                </div>
+                            </div>
+                            <a href="index.php?controller=cart&action=add&id=<?php echo $comic['id']; ?>" class="text-[10px] bg-green-600 text-white px-2 py-1 rounded font-bold uppercase">Đặt trước</a>
+                        </div>
+                        <?php endforeach; ?>
+                        <a href="index.php?controller=collection&type=preorder" class="block text-center text-xs text-blue-500 mt-4 hover:underline">Xem danh sách đặt trước</a>
+                    </div>
                 </div>
+
+                <script>
+                    function switchTab(tabId, el) {
+                        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+                        document.getElementById('tab-' + tabId).classList.remove('hidden');
+                        
+                        document.querySelectorAll('.tab-btn').forEach(b => {
+                            b.classList.remove('text-primary', 'border-primary', 'border-b-2', 'font-bold');
+                            b.classList.add('text-gray-500');
+                        });
+                        
+                        el.classList.add('text-primary', 'border-primary', 'border-b-2', 'font-bold');
+                        el.classList.remove('text-gray-500');
+                    }
+                </script>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-300 py-6 text-sm border-t-4 border-primary">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between px-4">
-            <div class="mb-4 md:mb-0">
-                <a href="#" class="text-2xl font-bold text-white tracking-widest" style="font-family: 'Verdana';">MangaStore</a>
-                <p class="mt-2 w-full md:w-80 leading-relaxed text-xs">
-                    Cửa hàng truyện tranh trực tuyến số 1 hiện nay. Giao hàng toàn quốc, thanh toán an toàn.
-                </p>
-                <div class="mt-2 text-xl space-x-2 text-white">
-                    <i class="fab fa-cc-visa"></i>
-                    <i class="fab fa-cc-mastercard"></i>
-                    <i class="fab fa-cc-paypal"></i>
-                </div>
-            </div>
-            <div class="flex flex-col space-y-2">
-                <h4 class="text-white font-semibold">Chăm sóc khách hàng</h4>
-                <a href="#" class="hover:text-primary transition">Giới thiệu</a>
-                <a href="#" class="hover:text-primary transition">Chính sách vận chuyển</a>
-                <a href="#" class="hover:text-primary transition">Đổi trả & Hoàn tiền</a>
-            </div>
-        </div>
-    </footer>
-
-</body>
-</html>
+<?php require_once __DIR__ . '/../partials/footer.php'; ?>

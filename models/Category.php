@@ -140,5 +140,21 @@ class Category {
         }
         return false;
     }
+    // Danh sách tất cả category (public frontend)
+    public function getAllActive() {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE status = 1 ORDER BY name ASC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Lấy 1 category theo ID (public frontend)
+    public function getById($id) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 ?>

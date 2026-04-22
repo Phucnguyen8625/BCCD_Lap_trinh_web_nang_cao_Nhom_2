@@ -29,16 +29,24 @@ class AdminComicController {
 
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $this->comic->category_id = $_POST['category_id'];
+            $this->comic->category_ids = isset($_POST['category_ids']) ? $_POST['category_ids'] : [];
             $this->comic->name = trim($_POST['name']);
             $this->comic->author = trim($_POST['author']);
             $this->comic->price = floatval($_POST['price']);
             $this->comic->quantity = intval($_POST['quantity']);
             $this->comic->description = trim($_POST['description']);
+            $this->comic->is_sale = isset($_POST['is_sale']) ? 1 : 0;
+            $this->comic->is_combo = isset($_POST['is_combo']) ? 1 : 0;
+            $this->comic->is_bestseller = isset($_POST['is_bestseller']) ? 1 : 0;
+            $this->comic->is_preorder = isset($_POST['is_preorder']) ? 1 : 0;
             $this->comic->image_url = ""; // default empty
 
-            // Handle Image Upload
-            if(isset($_FILES["image"]) && $_FILES["image"]["error"] == 0){
+            // Handle Image URL Link choice
+            if (!empty($_POST['image_url_link'])) {
+                $this->comic->image_url = trim($_POST['image_url_link']);
+            } 
+            // Handle Image File Upload (only if no URL link provided)
+            else if(isset($_FILES["image"]) && $_FILES["image"]["error"] == 0){
                 $target_dir = __DIR__ . "/../public/uploads/comics/";
                 if (!file_exists($target_dir)) {
                     mkdir($target_dir, 0777, true);
@@ -87,16 +95,29 @@ class AdminComicController {
             $this->comic->readOne(); // to get old image first
             $old_image = $this->comic->image_url;
 
-            $this->comic->category_id = $_POST['category_id'];
+            $this->comic->category_ids = isset($_POST['category_ids']) ? $_POST['category_ids'] : [];
             $this->comic->name = trim($_POST['name']);
             $this->comic->author = trim($_POST['author']);
             $this->comic->price = floatval($_POST['price']);
             $this->comic->quantity = intval($_POST['quantity']);
             $this->comic->description = trim($_POST['description']);
+            $this->comic->is_sale = isset($_POST['is_sale']) ? 1 : 0;
+            $this->comic->is_combo = isset($_POST['is_combo']) ? 1 : 0;
+            $this->comic->is_bestseller = isset($_POST['is_bestseller']) ? 1 : 0;
+            $this->comic->is_preorder = isset($_POST['is_preorder']) ? 1 : 0;
             $this->comic->image_url = $old_image; // keep old by default
 
-            // Handle Image Upload if changed
-            if(isset($_FILES["image"]) && $_FILES["image"]["error"] == 0){
+            // Handle Image URL Link choice
+            if (!empty($_POST['image_url_link'])) {
+                $this->comic->image_url = trim($_POST['image_url_link']);
+                
+                // If we switch to URL, delete old local file if existed
+                if(!empty($old_image) && strpos($old_image, 'http') !== 0 && file_exists(__DIR__ . "/../" . $old_image)) {
+                    unlink(__DIR__ . "/../" . $old_image);
+                }
+            }
+            // Handle Image File Upload if changed (only if no URL link provided)
+            else if(isset($_FILES["image"]) && $_FILES["image"]["error"] == 0){
                 $target_dir = __DIR__ . "/../public/uploads/comics/";
                 if (!file_exists($target_dir)) {
                     mkdir($target_dir, 0777, true);

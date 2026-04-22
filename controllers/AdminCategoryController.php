@@ -39,7 +39,7 @@ class AdminCategoryController {
 
             $result = $this->category->create();
             if ($result === true) {
-                header("Location: admin.php?action=index&success=Tạo thành công");
+                header("Location: admin.php?controller=category&action=index&success=Tạo thành công");
                 exit();
             } else {
                 $error = $result; 
@@ -55,7 +55,7 @@ class AdminCategoryController {
             if ($this->category->readOne()) {
                 require_once __DIR__ . '/../views/admin/categories/edit.php';
             } else {
-                header("Location: admin.php?action=index&error=Danh mục không tồn tại");
+                header("Location: admin.php?controller=category&action=index&error=Danh mục không tồn tại");
                 exit();
             }
         }
@@ -77,7 +77,7 @@ class AdminCategoryController {
 
             $result = $this->category->update();
             if ($result === true) {
-                header("Location: admin.php?action=index&success=Cập nhật thành công");
+                header("Location: admin.php?controller=category&action=index&success=Cập nhật thành công");
                 exit();
             } else {
                 $error = $result;
@@ -93,9 +93,9 @@ class AdminCategoryController {
             $result = $this->category->delete();
             
             if ($result === true) {
-                header("Location: admin.php?action=index&success=Xóa danh mục thành công");
+                header("Location: admin.php?controller=category&action=index&success=Xóa danh mục thành công");
             } else {
-                header("Location: admin.php?action=index&error=" . urlencode($result));
+                header("Location: admin.php?controller=category&action=index&error=" . urlencode($result));
             }
             exit();
         }

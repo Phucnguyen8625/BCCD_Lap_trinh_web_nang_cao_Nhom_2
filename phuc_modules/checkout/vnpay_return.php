@@ -44,7 +44,7 @@ $message = 'Không tìm thấy giao dịch.';
 $success = false;
 
 if ($txnRef !== '') {
-    $stmt = $pdo->prepare('SELECT * FROM payments WHERE transaction_code = :transaction_code LIMIT 1');
+    $stmt = $pdo->prepare('SELECT * FROM payments WHERE transaction_id = :transaction_code LIMIT 1');
     $stmt->execute([
         'transaction_code' => $txnRef,
     ]);
@@ -70,9 +70,9 @@ if (!$isValid) {
     if ($expectedAmount !== $vnpAmount) {
         $message = 'Số tiền thanh toán không khớp.';
     } else {
-        if ((string) $payment['status'] === 'pending') {
-            $newPaymentStatus = $isCallbackSuccess ? 'paid' : 'failed';
-            $newOrderStatus = $isCallbackSuccess ? 'confirmed' : 'cancelled';
+        if ((string) $payment['payment_status'] === 'pending') {
+            $newPaymentStatus = $isCallbackSuccess ? 'success' : 'failed';
+            $newOrderStatus = $isCallbackSuccess ? 'processing' : 'cancelled';
 
             $pdo->beginTransaction();
 
@@ -83,50 +83,26 @@ if (!$isValid) {
                 ]);
                 $lockedPayment = $lockStmt->fetch();
 
-                if ($lockedPayment && (string) $lockedPayment['status'] === 'pending') {
+                if ($lockedPayment && (string) $lockedPayment['payment_status'] === 'pending') {
                     $updatePayment = $pdo->prepare(
                         'UPDATE payments
-                         SET status = :status,
-                             response_code = :response_code,
-                             bank_code = :bank_code,
-                             paid_at = :paid_at,
-                             raw_response = :raw_response,
-                             updated_at = NOW()
+                         SET payment_status = :status
                          WHERE id = :id'
                     );
                     $updatePayment->execute([
                         'status' => $newPaymentStatus,
-                        'response_code' => $responseCode,
-                        'bank_code' => $bankCode,
-                        'paid_at' => $paidAt,
-                        'raw_response' => json_encode($input, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
                         'id' => $lockedPayment['id'],
                     ]);
 
                     $updateOrder = $pdo->prepare(
                         'UPDATE orders
-                         SET payment_status = :payment_status,
-                             status = :status,
+                         SET status = :status,
                              updated_at = NOW()
                          WHERE id = :id'
                     );
                     $updateOrder->execute([
-                        'payment_status' => $newPaymentStatus,
                         'status' => $newOrderStatus,
                         'id' => $lockedPayment['order_id'],
-                    ]);
-
-                    $insertLog = $pdo->prepare(
-                        'INSERT INTO order_logs (order_id, old_status, new_status, note, changed_by, changed_by_name)
-                         VALUES (:order_id, :old_status, :new_status, :note, :changed_by, :changed_by_name)'
-                    );
-                    $insertLog->execute([
-                        'order_id' => $lockedPayment['order_id'],
-                        'old_status' => 'pending',
-                        'new_status' => $newOrderStatus,
-                        'note' => 'VNPAY return. TransactionNo=' . $transactionNo . ', ResponseCode=' . $responseCode,
-                        'changed_by' => 0,
-                        'changed_by_name' => 'VNPAY_RETURN',
                     ]);
                 }
 
@@ -139,7 +115,7 @@ if (!$isValid) {
                 $message = 'Có lỗi khi cập nhật kết quả thanh toán: ' . $exception->getMessage();
             }
 
-            $stmt = $pdo->prepare('SELECT * FROM payments WHERE transaction_code = :transaction_code LIMIT 1');
+            $stmt = $pdo->prepare('SELECT * FROM payments WHERE transaction_id = :transaction_code LIMIT 1');
             $stmt->execute([
                 'transaction_code' => $txnRef,
             ]);
@@ -154,7 +130,7 @@ if (!$isValid) {
             }
         }
 
-        $success = $payment && (string) $payment['status'] === 'paid';
+        $success = $payment && ((string) $payment['payment_status'] === 'success' || (string) $payment['payment_status'] === 'paid');
         $message = $success
             ? 'Thanh toán VNPAY thành công.'
             : 'Thanh toán VNPAY thất bại hoặc bị hủy.';
@@ -174,13 +150,13 @@ require_once dirname(__DIR__) . '/layouts/header.php';
         <li><strong>Mã giao dịch VNPAY:</strong> <?= e($transactionNo) ?></li>
         <li><strong>Ngân hàng:</strong> <?= e($bankCode) ?></li>
         <li><strong>Thời gian:</strong> <?= e($payDate) ?></li>
-        <li><strong>Trạng thái payment:</strong> <?= e($payment['status'] ?? 'unknown') ?></li>
+        <li><strong>Trạng thái payment:</strong> <?= e($payment['payment_status'] ?? 'unknown') ?></li>
         <li><strong>Trạng thái order:</strong> <?= e($order['status'] ?? 'unknown') ?></li>
     </ul>
 
     <div class="actions" style="margin-top: 14px;">
-        <a class="btn" href="<?= e(buildBasePath('admin/orders/index.php')) ?>">Vào quản lý đơn hàng</a>
-        <a class="btn btn-secondary" href="<?= e(buildBasePath('admin/payments/index.php')) ?>">Vào quản lý thanh toán</a>
+        <a class="p-2 bg-blue-500 text-white rounded" href="<?= e(buildBasePath('../admin.php?controller=order')) ?>">Vào quản lý đơn hàng</a>
+        <a class="p-2 bg-gray-500 text-white rounded" href="<?= e(buildBasePath('../admin.php?controller=payment')) ?>">Vào quản lý thanh toán</a>
     </div>
 </div>
 

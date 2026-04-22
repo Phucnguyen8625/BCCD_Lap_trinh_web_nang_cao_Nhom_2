@@ -1,148 +1,146 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sửa Thông Tin Truyện - Admin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
-    </style>
-</head>
-<body class="text-gray-800 antialiased min-h-screen flex">
-    
-    <!-- Sidebar Placeholder -->
-    <aside class="w-64 bg-slate-900 text-white flex-shrink-0 hidden md:block">
-        <div class="h-16 flex items-center justify-center border-b border-gray-800">
-            <h1 class="text-xl font-bold tracking-wider text-indigo-400">COMIC ADMIN</h1>
-        </div>
-        <nav class="p-4 space-y-2">
-            <a href="admin.php?controller=category" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-slate-800 hover:text-white text-gray-400">
-                Quản lý danh mục
-            </a>
-            <a href="admin.php?controller=comic" class="block py-2.5 px-4 rounded transition duration-200 bg-indigo-600 text-white">
-                Quản lý truyện bán
-            </a>
-        </nav>
-    </aside>
+<?php $pageTitle = 'Sửa thông tin truyện'; ?>
+<?php require_once __DIR__ . '/../partials/header.php'; ?>
+<?php require_once __DIR__ . '/../partials/sidebar.php'; ?>
 
-    <!-- Main Content -->
-    <main class="flex-1 flex flex-col">
-        <!-- Header -->
-        <header class="h-16 bg-white shadow flex items-center justify-between px-6">
-            <div class="flex items-center space-x-3">
-                <a href="admin.php?controller=comic" class="text-gray-400 hover:text-indigo-600 transition">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                </a>
-                <h2 class="text-2xl font-semibold text-gray-800">Chỉnh Sửa Thông Tin Sản Phẩm</h2>
+<!-- Content Header -->
+<div class="mb-8">
+    <a href="admin.php?controller=comic&action=index" class="text-sm font-bold text-slate-400 hover:text-accent transition flex items-center mb-4">
+        <i class="fas fa-arrow-left mr-2 text-xs"></i> DANH SÁCH TRUYỆN
+    </a>
+    <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-slate-800">Sửa thông tin truyện</h1>
+        <span class="px-3 py-1 bg-slate-100 text-slate-500 rounded-lg text-xs font-bold border border-slate-200 uppercase tracking-tighter italic">ID: #<?php echo htmlspecialchars($this->comic->id); ?></span>
+    </div>
+</div>
+
+<div class="max-w-4xl">
+    <form action="admin.php?controller=comic&action=update" method="POST" enctype="multipart/form-data" class="space-y-8">
+        <input type="hidden" name="id" value="<?php echo htmlspecialchars($this->comic->id); ?>">
+        
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="p-6 border-b border-slate-100 flex items-center">
+                <div class="w-8 h-8 bg-accent/10 text-accent rounded-lg flex items-center justify-center mr-3">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">Cập nhật thông tin</h3>
             </div>
-        </header>
-
-        <!-- Content -->
-        <div class="p-6 flex-1 overflow-y-auto w-full max-w-4xl mx-auto">
             
-            <?php if(isset($_GET['error'])): ?>
-                <div class="mb-6 bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-sm flex items-center">
-                    <?php echo htmlspecialchars($_GET['error']); ?>
+            <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="md:col-span-2">
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">Tên Truyện / Tập Truyện <span class="text-red-500">*</span></label>
+                    <input type="text" name="name" required value="<?php echo htmlspecialchars($this->comic->name); ?>" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent transition" placeholder="Ví dụ: One Piece Tập 100">
                 </div>
-            <?php endif; ?>
 
-            <div class="bg-white rounded-xl shadow-md border-0 overflow-hidden">
-                <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                    <div>
-                        <h3 class="text-lg font-medium text-gray-800">Thông tin sản phẩm truyện</h3>
-                        <p class="text-sm text-gray-500 mt-1">Cập nhật giá, kho và thông tin.</p>
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">Thể loại <span class="text-red-500">*</span></label>
+                    <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <?php foreach($categories as $cat): ?>
+                            <label class="flex items-center space-x-2 p-2 rounded-lg hover:bg-white cursor-pointer transition border border-transparent hover:border-slate-100">
+                                <input type="checkbox" name="category_ids[]" value="<?php echo $cat['id']; ?>" 
+                                    <?php echo (in_array($cat['id'], $this->comic->category_ids)) ? 'checked' : ''; ?>
+                                    class="w-4 h-4 text-accent border-slate-300 rounded focus:ring-accent">
+                                <span class="text-xs font-bold text-slate-600 uppercase tracking-tighter"><?php echo htmlspecialchars($cat['name']); ?></span>
+                            </label>
+                        <?php endforeach; ?>
                     </div>
-                    <span class="px-3 py-1 bg-gray-100 text-gray-600 rounded text-sm font-medium border border-gray-200">ID: #<?php echo htmlspecialchars($this->comic->id); ?></span>
                 </div>
-                
-                <form action="admin.php?controller=comic&action=update" method="POST" enctype="multipart/form-data" class="p-6">
-                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($this->comic->id); ?>">
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        
-                        <!-- Left Column -->
-                        <div class="space-y-6">
-                            <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Tên Truyện <span class="text-red-500">*</span></label>
-                                <input type="text" id="name" name="name" required value="<?php echo htmlspecialchars($this->comic->name); ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
-                            </div>
 
-                            <div>
-                                <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Thể loại <span class="text-red-500">*</span></label>
-                                <select id="category_id" name="category_id" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition bg-white">
-                                    <option value="">-- Chọn thể loại --</option>
-                                    <?php foreach($categories as $cat): ?>
-                                        <option value="<?php echo $cat['id']; ?>" <?php echo ($cat['id'] == $this->comic->category_id) ? 'selected' : ''; ?>>
-                                            <?php echo htmlspecialchars($cat['name']); ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">Tác giả / NXB</label>
+                    <input type="text" name="author" value="<?php echo htmlspecialchars($this->comic->author); ?>" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent transition" placeholder="Tên tác giả...">
+                </div>
 
-                            <div>
-                                <label for="author" class="block text-sm font-medium text-gray-700 mb-1">Tác giả</label>
-                                <input type="text" id="author" name="author" value="<?php echo htmlspecialchars($this->comic->author); ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
-                            </div>
-                            
-                            <div>
-                                <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Mô tả sản phẩm</label>
-                                <textarea id="description" name="description" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"><?php echo htmlspecialchars($this->comic->description); ?></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Right Column -->
-                        <div class="space-y-6">
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Giá bán (VNĐ) <span class="text-red-500">*</span></label>
-                                    <input type="number" id="price" name="price" min="0" required value="<?php echo htmlspecialchars($this->comic->price); ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
-                                </div>
-                                <div>
-                                    <label for="quantity" class="block text-sm font-medium text-gray-700 mb-1">Số lượng kho <span class="text-red-500">*</span></label>
-                                    <input type="number" id="quantity" name="quantity" min="0" required value="<?php echo htmlspecialchars($this->comic->quantity); ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Cập nhật ảnh bìa mới (Tùy chọn)</label>
-                                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 hover:bg-gray-100 transition relative">
-                                    <div class="space-y-1 text-center">
-                                        <div class="flex text-sm text-gray-600 justify-center">
-                                            <label for="image" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                                <span>Chọn file ảnh mới</span>
-                                                <input id="image" name="image" type="file" class="sr-only" accept="image/*">
-                                            </label>
-                                        </div>
-                                        <p class="text-xs text-gray-500 mt-2">Bỏ trống nếu không muốn đổi ảnh bìa hiện tại</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Hiển thị ảnh hiện tại nếu có -->
-                            <?php if(!empty($this->comic->image_url)): ?>
-                            <div class="mt-2">
-                                <span class="text-sm text-gray-500">Ảnh hiện tại:</span>
-                                <div class="mt-1 h-32 w-24 rounded border overflow-hidden shadow-sm">
-                                    <img src="<?php echo htmlspecialchars($this->comic->image_url); ?>" alt="Current cover" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <?php endif; ?>
-                        </div>
-
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">Giá bán (VNĐ) <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <input type="number" name="price" min="0" required value="<?php echo htmlspecialchars($this->comic->price); ?>" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent transition pl-12">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs">₫</span>
                     </div>
+                </div>
 
-                    <div class="pt-6 mt-6 border-t border-gray-100 flex justify-end space-x-3">
-                        <a href="admin.php?controller=comic" class="px-5 py-2.5 bg-white border border-gray-300 text-gray-700 font-medium text-sm rounded-lg hover:bg-gray-50 transition">Hủy bỏ</a>
-                        <button type="submit" class="px-5 py-2.5 bg-indigo-600 text-white font-medium text-sm rounded-lg hover:bg-indigo-700 transition shadow-md hover:shadow-lg">
-                            Lưu Thay Đổi
-                        </button>
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">Số lượng kho <span class="text-red-500">*</span></label>
+                    <input type="number" name="quantity" min="0" required value="<?php echo htmlspecialchars($this->comic->quantity); ?>" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent transition">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">Mô tả tóm tắt</label>
+                    <textarea name="description" rows="4" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent transition" placeholder="Nội dung tóm tắt cốt truyện..."><?php echo htmlspecialchars($this->comic->description); ?></textarea>
+                </div>
+
+                <div class="md:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-4 bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" name="is_sale" value="1" <?php echo ($this->comic->is_sale == 1) ? 'checked' : ''; ?> class="w-4 h-4 text-accent border-slate-300 rounded focus:ring-accent">
+                        <label class="text-xs font-bold text-slate-600 uppercase tracking-tighter">TRUYỆN SALE</label>
                     </div>
-                </form>
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" name="is_bestseller" value="1" <?php echo ($this->comic->is_bestseller == 1) ? 'checked' : ''; ?> class="w-4 h-4 text-accent border-slate-300 rounded focus:ring-accent">
+                        <label class="text-xs font-bold text-slate-600 uppercase tracking-tighter">BÁN CHẠY</label>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" name="is_combo" value="1" <?php echo ($this->comic->is_combo == 1) ? 'checked' : ''; ?> class="w-4 h-4 text-accent border-slate-300 rounded focus:ring-accent">
+                        <label class="text-xs font-bold text-slate-600 uppercase tracking-tighter">TRUYỆN COMBO</label>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" name="is_preorder" value="1" <?php echo ($this->comic->is_preorder == 1) ? 'checked' : ''; ?> class="w-4 h-4 text-accent border-slate-300 rounded focus:ring-accent">
+                        <label class="text-xs font-bold text-slate-600 uppercase tracking-tighter">PRE-ORDER</label>
+                    </div>
+                </div>
             </div>
         </div>
-    </main>
 
-</body>
-</html>
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="p-6 border-b border-slate-100 flex items-center">
+                <div class="w-8 h-8 bg-orange-50 text-orange-500 rounded-lg flex items-center justify-center mr-3">
+                    <i class="fas fa-image"></i>
+                </div>
+                <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">Hình ảnh hiển thị</h3>
+            </div>
+            
+            <div class="p-8 space-y-6">
+                <div class="flex items-center space-x-8 p-4 bg-slate-50 rounded-2xl border border-slate-100 italic">
+                    <div class="w-24 h-32 bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200 shrink-0">
+                        <?php if($this->comic->image_url): ?>
+                            <img src="<?php echo htmlspecialchars($this->comic->image_url); ?>" class="w-full h-full object-cover">
+                        <?php else: ?>
+                            <div class="w-full h-full flex items-center justify-center text-[8px] text-slate-300 font-bold p-2 text-center">Chưa có ảnh</div>
+                        <?php endif; ?>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-slate-500 mb-1">Ảnh bìa hiện tại</p>
+                        <p class="text-[10px] text-slate-400">Tải ảnh mới bên dưới để thay thế ảnh này.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-center border-2 border-dashed border-slate-200 rounded-2xl p-10 bg-white hover:bg-slate-50 transition cursor-pointer group relative">
+                    <div class="text-center">
+                        <i class="fas fa-sync-alt text-2xl text-slate-200 group-hover:text-accent transition duration-300 mb-3"></i>
+                        <p class="text-sm font-bold text-slate-400">Chọn tệp ảnh mới</p>
+                        <input type="file" name="image" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
+                        <span class="bg-white px-4 text-[10px] font-black text-slate-300 uppercase tracking-widest">Hoặc thay bằng link ảnh</span>
+                    </div>
+                    <div class="border-t border-slate-100"></div>
+                </div>
+
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">Dán link ảnh</label>
+                    <input type="text" name="image_url_link" value="<?php echo (strpos($this->comic->image_url, 'http') === 0) ? htmlspecialchars($this->comic->image_url) : ''; ?>" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent transition" placeholder="https://example.com/image.jpg">
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-end space-x-4">
+            <a href="admin.php?controller=comic" class="px-8 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-slate-600 transition">HỦY BỎ</a>
+            <button type="submit" class="bg-accent hover:bg-indigo-600 text-white font-bold py-3 px-12 rounded-xl transition shadow-xl shadow-indigo-200">
+                LƯU THAY ĐỔI
+            </button>
+        </div>
+    </form>
+</div>
+
+<?php require_once __DIR__ . '/../partials/footer.php'; ?>

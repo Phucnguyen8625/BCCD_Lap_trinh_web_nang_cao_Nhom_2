@@ -30,7 +30,7 @@ define('APP_NAME', appConfig($localConfig, 'APP_NAME', 'Comic Store - Module Ngu
 define('BASE_URL', appConfig($localConfig, 'BASE_URL', 'http://localhost/BCCD_Lap_trinh_web_nang_cao_Nhom_2/phuc_modules'));
 
 define('DB_HOST', appConfig($localConfig, 'DB_HOST', '127.0.0.1'));
-define('DB_NAME', appConfig($localConfig, 'DB_NAME', 'comic_store'));
+define('DB_NAME', appConfig($localConfig, 'DB_NAME', 'ban_truyen_tranh'));
 define('DB_USER', appConfig($localConfig, 'DB_USER', 'root'));
 define('DB_PASS', appConfig($localConfig, 'DB_PASS', ''));
 define('DB_CHARSET', appConfig($localConfig, 'DB_CHARSET', 'utf8mb4'));

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../models/Comic.php';
+require_once __DIR__ . '/../models/Category.php';
 
 class CartController {
     
@@ -25,6 +26,11 @@ class CartController {
         $cart_items = [];
         $total_price = 0;
 
+        // Auto-recover if session cart contains malformed old array data
+        if (!empty($_SESSION['cart']) && is_array(reset($_SESSION['cart']))) {
+            $_SESSION['cart'] = [];
+        }
+
         foreach ($_SESSION['cart'] as $comic_id => $quantity) {
             $this->comicModel->id = $comic_id;
             if ($this->comicModel->readOne()) {
@@ -41,6 +47,12 @@ class CartController {
                 ];
             }
         }
+
+        // Load categories for nav
+        $database = new Database();
+        $db = $database->getConnection();
+        $categoryModel = new Category($db);
+        $categories = $categoryModel->getAllActive();
 
         require_once __DIR__ . '/../views/user/cart/index.php';
     }

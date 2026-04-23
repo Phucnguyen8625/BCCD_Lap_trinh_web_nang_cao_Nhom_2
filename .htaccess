@@ -1,4 +1,10 @@
 RewriteEngine On
-# Tự động chuyển hướng từ tên miền cũ sang tên miền mới pkbcomic.io.vn
+
+# 1. Ép buộc sử dụng HTTPS (Bảo mật)
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# 2. Chuyển hướng từ tên miền cũ sang tên miền mới (HTTPS)
 RewriteCond %{HTTP_HOST} ^(www\.)?pkbcomicstore\.great-site\.net$ [NC]
-RewriteRule ^(.*)$ http://pkbcomic.io.vn/$1 [L,R=301]
+RewriteRule ^(.*)$ https://pkbcomic.io.vn/$1 [L,R=301]

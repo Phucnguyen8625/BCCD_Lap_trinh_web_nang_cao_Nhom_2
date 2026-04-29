@@ -1,4 +1,4 @@
-# Báo cáo Đồ án Web Nâng Cao - MangaStore
+# Báo cáo chuyên đề Lập trình Web Nâng Cao - MangaStore
 
 ## Mục lục Software Requirement Specification (SRS)
 
